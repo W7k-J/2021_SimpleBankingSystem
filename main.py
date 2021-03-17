@@ -28,7 +28,7 @@ def checker_card_number(number):
 #     try len 
 
 def log_in():
-    card_number = int(input("Enter your card number \n"))
+    card_number = input("Enter your card number \n")
     pin_number = input("Enter your PIN \n")
     print("\n")
     if card_number in database and database[card_number][0] == pin_number:
@@ -57,7 +57,27 @@ def create_account():
     
     print("Your card number:")
     while True:
-        temp_card_number = int("400000" + ''.join([str(random.randrange(10)) for k in range(10)]))
+        #control sum
+        temp_cn = ("400000" + ''.join([str(random.randrange(10)) for k in range(9)]))
+        total = 0
+        for num, char in enumerate(temp_cn):
+            print(str(num) + "----" + str(char))
+            if (num + 1)% 2 == 1:
+                mult = int(char) * 2
+                if mult > 9:  
+                    total = total + mult - 9 
+                else:
+                    total = total + mult
+            else:
+                total = total + int(char)
+        print(total)
+        last_digit = str(10 - (total % 10))
+
+        print(last_digit)
+        
+        temp_card_number = temp_cn + last_digit[-1]        
+         
+        #check if in database
         if temp_card_number not in database:
             card_number = temp_card_number
             break
