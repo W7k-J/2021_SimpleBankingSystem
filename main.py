@@ -50,6 +50,7 @@ def log_out():
     global current_log
     current_log = 0
 
+
 def balance_check():
     print("\n")
     print(f"Balance: {database[current_log][1]}")
@@ -109,23 +110,18 @@ def create_account():
 
 
 
-
+conn = sqlite3.connect('card.s3db')
+cur = conn.cursor()
 
 try:
-    conn = sqlite3.connect('card.s3db')
-    cur = conn.cursor()
-
-    cur.execute("""CREATE TABLE card (
-            id INTEGER NOT NULL AUTO_INCREMENT,
-            number TEXT,
-            pin TEXT,
-            balance INTEGER DEFAULT 0
-    );
-            """)
-
+    cur.execute("CREATE TABLE card (id INTEGER PRIMARY KEY, number TEXT, pin TEXT, balance INTEGER DEFAULT 0);")
     conn.commit()
+    
 except:
-    print()
+    print("database exist")
+conn.commit()
+
+
 
 # number : (pin, money)
 database = {}
@@ -149,4 +145,6 @@ while True:
             log_out()
     elif choice == "0":
         print("Bye!")
+        cur.close()
+        conn.close() 
         sys.exit()
