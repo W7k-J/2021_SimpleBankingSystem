@@ -73,6 +73,7 @@ def transfer():
     #Not in data base
     try:
         cur.execute(f""" SELECT * FROM card WHERE number = {card_number} """)
+        row = tuple(cur.fetchone())
     except:
         print("Such a card does not exist.")
         return()
@@ -105,9 +106,7 @@ def transfer():
         cur.execute(f"""UPDATE card SET balance ={new_balance} WHERE number = {card_number}""")
         conn.commit()
         
-        
-        
-        
+
         
         print('Success!')
 
